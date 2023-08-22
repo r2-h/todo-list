@@ -1,7 +1,7 @@
 import { TaskPriorities, TaskStatuses, TaskType, todolistsAPI, UpdateTaskModelType } from "api/todolists-api"
 import { Dispatch } from "redux"
-import { AppRootStateType } from "../../app/store"
-import { handleServerAppError, handleServerNetworkError } from "../../utils/error-utils"
+import { AppRootStateType } from "app/store"
+import { handleServerAppError, handleServerNetworkError } from "utils/error-utils"
 import { appActions } from "app/app-reducer"
 import { todolistsActions } from "features/TodolistsList/todolists-reducer"
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
@@ -57,44 +57,49 @@ export const tasksReducer = slice.reducer
 export const tasksActions = slice.actions
 
 // thunks
-export const fetchTasksTC = (todolistId: string) => (dispatch: Dispatch) => {
+export const fetchTasksTC = (todolistId: string) => async (dispatch: Dispatch) => {
   dispatch(appActions.setAppStatus({ status: "loading" }))
-  todolistsAPI.getTasks(todolistId).then((res) => {
-    const tasks = res.data.items
-    dispatch(tasksActions.setTasks({ tasks, todolistId }))
+  try {
+    const res = await todolistsAPI.getTasks(todolistId)
+    dispatch(tasksActions.setTasks({ tasks: res.data.items, todolistId }))
     dispatch(appActions.setAppStatus({ status: "succeeded" }))
-  })
+  } catch (e) {
+    const error = e as { message: string }
+    handleServerNetworkError(error, dispatch)
+  }
 }
 
-export const removeTaskTC = (taskId: string, todolistId: string) => (dispatch: Dispatch) => {
-  todolistsAPI.deleteTask(todolistId, taskId).then((res) => {
-    const action = tasksActions.removeTask({ taskId, todolistId })
-    dispatch(action)
-  })
+export const removeTaskTC = (taskId: string, todolistId: string) => async (dispatch: Dispatch) => {
+  try {
+    await todolistsAPI.deleteTask(todolistId, taskId)
+    dispatch(tasksActions.removeTask({ taskId, todolistId }))
+  } catch (e) {
+    const error = e as { message: string }
+    handleServerNetworkError(error, dispatch)
+  }
 }
 
-export const addTaskTC = (title: string, todolistId: string) => (dispatch: Dispatch) => {
+export const addTaskTC = (title: string, todolistId: string) => async (dispatch: Dispatch) => {
   dispatch(appActions.setAppStatus({ status: "loading" }))
-  todolistsAPI
-    .createTask(todolistId, title)
-    .then((res) => {
-      if (res.data.resultCode === 0) {
-        const task = res.data.data.item
-        const action = tasksActions.addTask({ task })
-        dispatch(action)
-        dispatch(appActions.setAppStatus({ status: "succeeded" }))
-      } else {
-        handleServerAppError(res.data, dispatch)
-      }
-    })
-    .catch((error) => {
-      handleServerNetworkError(error, dispatch)
-    })
+  try {
+    const res = await todolistsAPI.createTask(todolistId, title)
+    if (res.data.resultCode === 0) {
+      const task = res.data.data.item
+      const action = tasksActions.addTask({ task })
+      dispatch(action)
+      dispatch(appActions.setAppStatus({ status: "succeeded" }))
+    } else {
+      handleServerAppError(res.data, dispatch)
+    }
+  } catch (e) {
+    const error = e as { message: string }
+    handleServerNetworkError(error, dispatch)
+  }
 }
 
 export const updateTaskTC =
   (taskId: string, domainModel: UpdateDomainTaskModelType, todolistId: string) =>
-  (dispatch: Dispatch, getState: () => AppRootStateType) => {
+  async (dispatch: Dispatch, getState: () => AppRootStateType) => {
     const state = getState()
     const task = state.tasks[todolistId].find((t) => t.id === taskId)
     if (!task) {
@@ -112,20 +117,18 @@ export const updateTaskTC =
       status: task.status,
       ...domainModel,
     }
-
-    todolistsAPI
-      .updateTask(todolistId, taskId, apiModel)
-      .then((res) => {
-        if (res.data.resultCode === 0) {
-          const action = tasksActions.updateTask({ taskId, model: domainModel, todolistId })
-          dispatch(action)
-        } else {
-          handleServerAppError(res.data, dispatch)
-        }
-      })
-      .catch((error) => {
-        handleServerNetworkError(error, dispatch)
-      })
+    try {
+      const res = await todolistsAPI.updateTask(todolistId, taskId, apiModel)
+      if (res.data.resultCode === 0) {
+        const action = tasksActions.updateTask({ taskId, model: domainModel, todolistId })
+        dispatch(action)
+      } else {
+        handleServerAppError(res.data, dispatch)
+      }
+    } catch (e) {
+      const error = e as { message: string }
+      handleServerNetworkError(error, dispatch)
+    }
   }
 
 // types

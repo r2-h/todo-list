@@ -1,7 +1,7 @@
-import { todolistsAPI, TodolistType } from "../../api/todolists-api"
+import { todolistsAPI, TodolistType } from "api/todolists-api"
 import { Dispatch } from "redux"
-import { handleServerNetworkError } from "../../utils/error-utils"
-import { AppThunk } from "../../app/store"
+import { handleServerNetworkError } from "utils/error-utils"
+import { AppThunk } from "app/store"
 import { appActions, RequestStatusType } from "app/app-reducer"
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { clearTasksAndTodolists } from "common/actions/common.actions"
@@ -53,49 +53,60 @@ export const todolistsActions = slice.actions
 
 // thunks
 export const fetchTodolistsTC = (): AppThunk => {
-  return (dispatch) => {
+  return async (dispatch) => {
     dispatch(appActions.setAppStatus({ status: "loading" }))
-    todolistsAPI
-      .getTodolists()
-      .then((res) => {
-        dispatch(todolistsActions.setTodolists({ todolists: res.data }))
-        dispatch(appActions.setAppStatus({ status: "succeeded" }))
-      })
-      .catch((error) => {
-        handleServerNetworkError(error, dispatch)
-      })
+    try {
+      const res = await todolistsAPI.getTodolists()
+      dispatch(todolistsActions.setTodolists({ todolists: res.data }))
+      dispatch(appActions.setAppStatus({ status: "succeeded" }))
+    } catch (e) {
+      const error = e as { message: string }
+      handleServerNetworkError(error, dispatch)
+    }
   }
 }
 
 export const removeTodolistTC = (todolistId: string) => {
-  return (dispatch: Dispatch) => {
+  return async (dispatch: Dispatch) => {
     //изменим глобальный статус приложения, чтобы вверху полоса побежала
     dispatch(appActions.setAppStatus({ status: "loading" }))
     //изменим статус конкретного тудулиста, чтобы он мог задизеблить что надо
     dispatch(todolistsActions.changeTodolistEntityStatus({ id: todolistId, entityStatus: "loading" }))
-    todolistsAPI.deleteTodolist(todolistId).then((res) => {
+    try {
+      await todolistsAPI.deleteTodolist(todolistId)
       dispatch(todolistsActions.removeTodolist({ id: todolistId }))
       //скажем глобально приложению, что асинхронная операция завершена
       dispatch(appActions.setAppStatus({ status: "succeeded" }))
-    })
+    } catch (e) {
+      const error = e as { message: string }
+      handleServerNetworkError(error, dispatch)
+    }
   }
 }
 
 export const addTodolistTC = (title: string) => {
-  return (dispatch: Dispatch) => {
+  return async (dispatch: Dispatch) => {
     dispatch(appActions.setAppStatus({ status: "loading" }))
-    todolistsAPI.createTodolist(title).then((res) => {
+    try {
+      const res = await todolistsAPI.createTodolist(title)
       dispatch(todolistsActions.addTodolist({ todolist: res.data.data.item }))
       dispatch(appActions.setAppStatus({ status: "succeeded" }))
-    })
+    } catch (e) {
+      const error = e as { message: string }
+      handleServerNetworkError(error, dispatch)
+    }
   }
 }
 
 export const changeTodolistTitleTC = (id: string, title: string) => {
-  return (dispatch: Dispatch) => {
-    todolistsAPI.updateTodolist(id, title).then((res) => {
+  return async (dispatch: Dispatch) => {
+    try {
+      await todolistsAPI.updateTodolist(id, title)
       dispatch(todolistsActions.changeTodolistTitle({ id, title }))
-    })
+    } catch (e) {
+      const error = e as { message: string }
+      handleServerNetworkError(error, dispatch)
+    }
   }
 }
 
