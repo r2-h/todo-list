@@ -1,5 +1,5 @@
-import { tasksReducer, TasksStateType, tasksThunks } from "features/TodolistsList/tasks_reducer"
-import { todolistsThunks } from "features/TodolistsList/todolists_reducer"
+import { tasksReducer, TasksStateType, tasksThunks } from "features/TodolistsList/Todolist/Task/tasks_reducer"
+import { todolistsThunks } from "features/TodolistsList/Todolist/todolists_reducer"
 import { TaskPriorities, TaskStatuses } from "common/enums"
 
 let startState: TasksStateType = {}
@@ -17,6 +17,7 @@ beforeEach(() => {
         addedDate: "",
         order: 0,
         priority: TaskPriorities.Low,
+        entityStatus: "idle",
       },
       {
         id: "2",
@@ -29,6 +30,7 @@ beforeEach(() => {
         addedDate: "",
         order: 0,
         priority: TaskPriorities.Low,
+        entityStatus: "idle",
       },
       {
         id: "3",
@@ -41,6 +43,7 @@ beforeEach(() => {
         addedDate: "",
         order: 0,
         priority: TaskPriorities.Low,
+        entityStatus: "idle",
       },
     ],
     todolistId2: [
@@ -55,6 +58,7 @@ beforeEach(() => {
         addedDate: "",
         order: 0,
         priority: TaskPriorities.Low,
+        entityStatus: "idle",
       },
       {
         id: "2",
@@ -67,6 +71,7 @@ beforeEach(() => {
         addedDate: "",
         order: 0,
         priority: TaskPriorities.Low,
+        entityStatus: "idle",
       },
       {
         id: "3",
@@ -79,6 +84,7 @@ beforeEach(() => {
         addedDate: "",
         order: 0,
         priority: TaskPriorities.Low,
+        entityStatus: "idle",
       },
     ],
   }

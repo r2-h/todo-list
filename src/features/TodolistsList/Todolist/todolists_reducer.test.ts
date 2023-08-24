@@ -4,7 +4,7 @@ import {
   todolistsActions,
   todolistsReducer,
   todolistsThunks,
-} from "features/TodolistsList/todolists_reducer"
+} from "features/TodolistsList/Todolist/todolists_reducer"
 import { v1 } from "uuid"
 import { RequestStatusType } from "app/app-reducer"
 import { TodolistType } from "features/TodolistsList/todolists_api"

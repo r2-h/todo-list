@@ -1,5 +1,5 @@
 import { appActions, RequestStatusType } from "app/app-reducer"
-import { todolistsThunks } from "features/TodolistsList/todolists_reducer"
+import { todolistsThunks } from "features/TodolistsList/Todolist/todolists_reducer"
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { clearTasksAndTodolists } from "common/actions/common.actions"
 import { createAppAsyncThunk } from "common/utils/createAppAsyncThunk"
@@ -35,7 +35,7 @@ const slice = createSlice({
         }
       })
       .addCase(addTask.fulfilled, (state, action) => {
-        state[action.payload.task.todoListId].unshift(action.payload.task)
+        state[action.payload.task.todoListId].unshift({ ...action.payload.task, entityStatus: "idle" })
       })
       .addCase(updateTask.fulfilled, (state, action) => {
         const tasks = state[action.payload.todolistId]
@@ -93,7 +93,6 @@ export const removeTask = createAppAsyncThunk<RemoveTaskArgType, RemoveTaskArgTy
       )
       await todolistsAPI.deleteTask(arg)
       dispatch(appActions.setAppStatus({ status: "succeeded" }))
-      debugger
       return { taskId: arg.taskId, todolistId: arg.todolistId }
     } catch (e) {
       handleServerNetworkError(e, dispatch)
@@ -184,7 +183,7 @@ export type UpdateDomainTaskModelType = {
 }
 
 export type TasksStateType = {
-  [key: string]: Array<TaskType>
+  [key: string]: Array<TaskDomainType>
 }
 export type TaskDomainType = TaskType & {
   entityStatus: RequestStatusType

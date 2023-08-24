@@ -1,7 +1,7 @@
 import { instance, ResponseType } from "common/api_instance"
 import { TaskPriorities, TaskStatuses } from "common/enums"
-import { AddTaskArgType, RemoveTaskArgType } from "features/TodolistsList/tasks_reducer"
-import { changeTodolistTitleArgType } from "features/TodolistsList/todolists_reducer"
+import { AddTaskArgType, RemoveTaskArgType } from "features/TodolistsList/Todolist/Task/tasks_reducer"
+import { changeTodolistTitleArgType } from "features/TodolistsList/Todolist/todolists_reducer"
 
 export const todolistsAPI = {
   getTodolists() {

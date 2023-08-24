@@ -2,16 +2,17 @@ import React, { ChangeEvent, useCallback } from "react"
 import { Checkbox, IconButton } from "@mui/material"
 import { EditableSpan } from "common/components/EditableSpan/EditableSpan"
 import { Delete } from "@mui/icons-material"
-import { TaskType } from "features/TodolistsList/todolists_api"
 import { TaskStatuses } from "common/enums"
+import { TaskDomainType } from "features/TodolistsList/Todolist/Task/tasks_reducer"
 
 type TaskPropsType = {
-  task: TaskType
+  task: TaskDomainType
   todolistId: string
   changeTaskStatus: (id: string, status: TaskStatuses, todolistId: string) => void
   changeTaskTitle: (taskId: string, newTitle: string, todolistId: string) => void
   removeTask: (taskId: string, todolistId: string) => void
 }
+
 export const Task = React.memo((props: TaskPropsType) => {
   const onClickHandler = useCallback(
     () => props.removeTask(props.task.id, props.todolistId),
@@ -42,7 +43,7 @@ export const Task = React.memo((props: TaskPropsType) => {
       <Checkbox checked={props.task.status === TaskStatuses.Completed} color="primary" onChange={onChangeHandler} />
 
       <EditableSpan value={props.task.title} onChange={onTitleChangeHandler} />
-      <IconButton onClick={onClickHandler}>
+      <IconButton onClick={onClickHandler} disabled={props.task.entityStatus === "loading"}>
         <Delete />
       </IconButton>
     </div>
