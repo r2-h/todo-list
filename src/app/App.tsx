@@ -1,12 +1,11 @@
-import React, { useCallback, useEffect } from "react"
+import React, { memo, useCallback, useEffect } from "react"
 import "./App.css"
 import { TodolistsList } from "features/TodolistsList/TodolistsList"
-import { ErrorSnackbar } from "components/ErrorSnackbar/ErrorSnackbar"
 import { useSelector } from "react-redux"
 import { initializeAppTC } from "./app-reducer"
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom"
-import { Login } from "features/Login/Login"
-import { logoutTC } from "features/Login/auth-reducer"
+import { HashRouter, Navigate, Route, Routes } from "react-router-dom"
+import { Login } from "features/auth/Login"
+import { logoutTC } from "features/auth/auth_reducer"
 import {
   AppBar,
   Button,
@@ -19,14 +18,15 @@ import {
 } from "@mui/material"
 import { Menu } from "@mui/icons-material"
 import { isInitializedSelector, statusSelector } from "app/app-selectors"
-import { useAppDispatch } from "hooks/useAppDispatch"
-import { isLoggedInSelector } from "features/Login/auth-selectors"
+import { useAppDispatch } from "common/hooks/useAppDispatch"
+import { isLoggedInSelector } from "features/auth/auth-selectors"
+import { ErrorSnackbar } from "common/components"
 
 type PropsType = {
   demo?: boolean
 }
 
-function App({ demo = false }: PropsType) {
+export const App = memo(({ demo = false }: PropsType) => {
   const status = useSelector(statusSelector)
   const isInitialized = useSelector(isInitializedSelector)
   const isLoggedIn = useSelector(isLoggedInSelector)
@@ -49,7 +49,7 @@ function App({ demo = false }: PropsType) {
   }
 
   return (
-    <BrowserRouter>
+    <HashRouter>
       <div className="App">
         <ErrorSnackbar />
         <AppBar position="static">
@@ -76,8 +76,6 @@ function App({ demo = false }: PropsType) {
           </Routes>
         </Container>
       </div>
-    </BrowserRouter>
+    </HashRouter>
   )
-}
-
-export default App
+})

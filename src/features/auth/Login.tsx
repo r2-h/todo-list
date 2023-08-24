@@ -1,12 +1,11 @@
 import React from "react"
 import { useFormik } from "formik"
 import { useSelector } from "react-redux"
-import { loginTC } from "./auth-reducer"
-import { AppRootStateType } from "../../app/store"
+import { loginTC } from "features/auth/auth_reducer"
 import { Navigate } from "react-router-dom"
-import { useAppDispatch } from "../../hooks/useAppDispatch"
+import { useAppDispatch } from "common/hooks/useAppDispatch"
 import { Button, Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, TextField } from "@mui/material"
-import { isLoggedInSelector } from "features/Login/auth-selectors"
+import { isLoggedInSelector } from "features/auth/auth-selectors"
 
 type FormikErrorType = {
   email?: string

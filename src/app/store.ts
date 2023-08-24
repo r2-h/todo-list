@@ -1,16 +1,16 @@
-import { tasksReducer } from "features/TodolistsList/tasks-reducer"
-import { todolistsReducer } from "features/TodolistsList/todolists-reducer"
+import { tasksReducer } from "features/TodolistsList/tasks_reducer"
+import { todolistsReducer } from "features/TodolistsList/todolists_reducer"
 import { AnyAction, combineReducers } from "redux"
 import { ThunkAction, ThunkDispatch } from "redux-thunk"
 import { appReducer } from "./app-reducer"
-import { authReducer } from "features/Login/auth-reducer"
+import { auth_reducer } from "features/auth/auth_reducer"
 import { configureStore } from "@reduxjs/toolkit"
 
 const rootReducer = combineReducers({
   tasks: tasksReducer,
   todolists: todolistsReducer,
   app: appReducer,
-  auth: authReducer,
+  auth: auth_reducer,
 })
 export const store = configureStore({
   reducer: rootReducer,
