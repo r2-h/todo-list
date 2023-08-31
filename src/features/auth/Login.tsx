@@ -1,11 +1,13 @@
 import React from "react"
-import { useFormik } from "formik"
+import { FormikHelpers, useFormik } from "formik"
 import { useSelector } from "react-redux"
 import { authThunks } from "features/auth/auth_reducer"
 import { Navigate } from "react-router-dom"
 import { useAppDispatch } from "common/hooks/useAppDispatch"
 import { Button, Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, TextField } from "@mui/material"
 import { isLoggedInSelector } from "features/auth/auth-selectors"
+import { LoginParamsType } from "features/auth/auth_api"
+import { BaseResponseType } from "common/types"
 
 type FormikErrorType = {
   email?: string
@@ -22,16 +24,17 @@ export const Login = () => {
     validate: (values) => {
       const errors: FormikErrorType = {}
       if (!values.email) {
-        errors.email = "Required"
+        errors.email = "Email is required"
       } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
         errors.email = "Invalid email address"
       }
 
       if (!values.password) {
-        errors.password = "Required"
-      } else if (values.password.length <= 3) {
-        errors.password = "Password should be more than 3 symbols"
+        errors.password = "Password is required"
+      } else if (values.password.length < 3) {
+        errors.password = "Must be 3 characters or more"
       }
+
       return errors
     },
     initialValues: {
@@ -39,8 +42,14 @@ export const Login = () => {
       password: "",
       rememberMe: false,
     },
-    onSubmit: (values) => {
+    onSubmit: (values, formikHelpers: FormikHelpers<LoginParamsType>) => {
       dispatch(authThunks.login(values))
+        .unwrap()
+        .catch((reason: BaseResponseType) => {
+          reason.fieldsErrors?.forEach((fieldError) => {
+            formikHelpers.setFieldError(fieldError.field, fieldError.error)
+          })
+        })
     },
   })
 

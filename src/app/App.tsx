@@ -2,7 +2,6 @@ import React, { memo, useCallback, useEffect } from "react"
 import "./App.css"
 import { TodolistsList } from "features/TodolistsList/TodolistsList"
 import { useSelector } from "react-redux"
-
 import { HashRouter, Navigate, Route, Routes } from "react-router-dom"
 import { Login } from "features/auth/Login"
 import { authThunks } from "features/auth/auth_reducer"
@@ -21,7 +20,6 @@ import { isInitializedSelector, statusSelector } from "app/app-selectors"
 import { useAppDispatch } from "common/hooks/useAppDispatch"
 import { isLoggedInSelector } from "features/auth/auth-selectors"
 import { ErrorSnackbar } from "common/components"
-import { appThunks } from "app/app-reducer"
 
 type PropsType = {
   demo?: boolean
@@ -34,7 +32,7 @@ export const App = memo(({ demo = false }: PropsType) => {
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    dispatch(appThunks.initializeApp())
+    dispatch(authThunks.initializeApp())
   }, [])
 
   const logoutHandler = useCallback(() => {
