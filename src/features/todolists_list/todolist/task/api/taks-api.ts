@@ -1,22 +1,9 @@
 import { instance } from "common/api_instance"
-import { TaskPriorities, TaskStatuses } from "common/enums"
-import { AddTaskArgType, RemoveTaskArgType } from "features/TodolistsList/Todolist/Task/tasks_reducer"
-import { changeTodolistTitleArgType } from "features/TodolistsList/Todolist/todolists_reducer"
+import { AddTaskArgType, RemoveTaskArgType } from "features/todolists_list/todolist/task/model/tasks_reducer"
 import { BaseResponseType } from "common/types"
+import { TaskPriorities, TaskStatuses } from "common/enums"
 
-export const todolistsAPI = {
-  getTodolists() {
-    return instance.get<TodolistType[]>("todo-lists")
-  },
-  createTodolist(title: string) {
-    return instance.post<BaseResponseType<{ item: TodolistType }>>("todo-lists", { title: title })
-  },
-  deleteTodolist(id: string) {
-    return instance.delete<BaseResponseType>(`todo-lists/${id}`)
-  },
-  updateTodolist(arg: changeTodolistTitleArgType) {
-    return instance.put<BaseResponseType>(`todo-lists/${arg.id}`, { title: arg.title })
-  },
+export const tasksAPI = {
   getTasks(todolistId: string) {
     return instance.get<GetTasksResponse>(`todo-lists/${todolistId}/tasks`)
   },
@@ -33,18 +20,7 @@ export const todolistsAPI = {
   },
 }
 
-// types
-export type TodolistType = {
-  id: string
-  title: string
-  addedDate: string
-  order: number
-}
-export const ResultCode = {
-  success: 0,
-  error: 1,
-  captcha: 10,
-} as const
+//types
 export type TaskType = {
   description: string
   title: string

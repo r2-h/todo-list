@@ -4,10 +4,10 @@ import {
   todolistsActions,
   todolistsReducer,
   todolistsThunks,
-} from "features/TodolistsList/Todolist/todolists_reducer"
+} from "features/todolists_list/todolist/model/todolists_reducer"
 import { v1 } from "uuid"
 import { RequestStatusType } from "app/app_reducer"
-import { TodolistType } from "features/TodolistsList/todolists_api"
+import { TodolistType } from "features/todolists_list/todolist/api/todolists_api"
 
 let todolistId1: string
 let todolistId2: string
@@ -34,7 +34,7 @@ test("correct todolist should be removed", () => {
 
 test("correct todolist should be added", () => {
   let todolist: TodolistType = {
-    title: "New Todolist",
+    title: "New todolist",
     id: "any id",
     addedDate: "",
     order: 0,
@@ -48,7 +48,7 @@ test("correct todolist should be added", () => {
 })
 
 test("correct todolist should change its name", () => {
-  let newTodolistTitle = "New Todolist"
+  let newTodolistTitle = "New todolist"
 
   const action = todolistsThunks.changeTodolistTitle.fulfilled(
     {

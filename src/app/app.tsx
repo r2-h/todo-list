@@ -1,9 +1,9 @@
 import React, { memo, useCallback, useEffect } from "react"
-import "./App.css"
-import { TodolistsList } from "features/TodolistsList/TodolistsList"
+import "app/app.css"
+import { TodolistsList } from "features/todolists_list/ui/todolistsList"
 import { useSelector } from "react-redux"
 import { HashRouter, Navigate, Route, Routes } from "react-router-dom"
-import { Login } from "features/auth/Login"
+import { Login } from "features/auth/login"
 import { authThunks } from "features/auth/auth_reducer"
 import {
   AppBar,
@@ -16,9 +16,9 @@ import {
   Typography,
 } from "@mui/material"
 import { Menu } from "@mui/icons-material"
-import { isInitializedSelector, statusSelector } from "app/app-selectors"
-import { useAppDispatch } from "common/hooks/useAppDispatch"
-import { isLoggedInSelector } from "features/auth/auth-selectors"
+import { isInitializedSelector, statusSelector } from "app/app_selectors"
+import { useAppDispatch } from "common/hooks/use_app_dispatch"
+import { isLoggedInSelector } from "features/auth/auth_selectors"
 import { ErrorSnackbar } from "common/components"
 
 type PropsType = {

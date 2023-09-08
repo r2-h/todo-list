@@ -3,7 +3,7 @@ import { appActions } from "app/app_reducer"
 import { clearTasksAndTodolists } from "common/actions/common.actions"
 import { createAppAsyncThunk, handleServerAppError, handleServerNetworkError, thunkTryCatch } from "common/utils"
 import { authAPI, LoginParamsType } from "features/auth/auth_api"
-import { ResultCode } from "features/TodolistsList/todolists_api"
+import { ResultCode } from "features/todolists_list/todolist/api/todolists_api"
 import { BaseResponseType } from "common/types"
 
 const slice = createSlice({
