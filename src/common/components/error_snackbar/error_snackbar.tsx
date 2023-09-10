@@ -1,15 +1,15 @@
-import React, { memo } from "react"
+import React, { FC, memo } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { AlertProps, Snackbar } from "@mui/material"
 import MuiAlert from "@mui/material/Alert"
-import { appActions } from "app/app_reducer"
+import { appActions } from "app/app_slice"
 import { errorSelector } from "app/app_selectors"
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />
 })
 
-export const ErrorSnackbar = memo(() => {
+export const ErrorSnackbar: FC = memo(() => {
   const error = useSelector(errorSelector)
   const dispatch = useDispatch()
 

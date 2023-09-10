@@ -1,5 +1,5 @@
-import { tasksReducer, TasksStateType, tasksThunks } from "features/todolists_list/todolist/task/model/tasks_reducer"
-import { todolistsThunks } from "features/todolists_list/todolist/model/todolists_reducer"
+import { tasksReducer, TasksStateType, tasksThunks } from "features/todolists_list/todolist/tasks/tasks_slice"
+import { todolistsThunks } from "features/todolists_list/todolist/todolists_slice"
 import { TaskPriorities, TaskStatuses } from "common/enums"
 
 let startState: TasksStateType = {}
@@ -219,7 +219,7 @@ test("empty arrays should be added when we set todolists", () => {
   expect(endState["2"]).toBeDefined()
 })
 
-test("tasks should be added for todolist", () => {
+test("task should be added for todolist", () => {
   const action = tasksThunks.fetchTasks.fulfilled(
     {
       tasks: startState["todolistId1"],

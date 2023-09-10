@@ -1,7 +1,7 @@
 import { useAppDispatch } from "common/hooks/use_app_dispatch"
 import { FormikHelpers, useFormik } from "formik"
 import { LoginParamsType } from "features/auth/auth_api"
-import { authThunks } from "features/auth/auth_reducer"
+import { authThunks } from "features/auth/auth_slice"
 import { BaseResponseType } from "common/types"
 
 export const useLogin = () => {

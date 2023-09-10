@@ -1,5 +1,5 @@
 import { instance } from "common/api_instance"
-import { AddTaskArgType, RemoveTaskArgType } from "features/todolists_list/todolist/task/model/tasks_reducer"
+import { AddTaskArgType, RemoveTaskArgType } from "features/todolists_list/todolist/tasks/tasks_slice"
 import { BaseResponseType } from "common/types"
 import { TaskPriorities, TaskStatuses } from "common/enums"
 

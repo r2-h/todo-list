@@ -1,14 +1,14 @@
 import React, { memo, useCallback, useEffect } from "react"
 import { useSelector } from "react-redux"
-import { todolistsThunks } from "features/todolists_list/todolist/model/todolists_reducer"
+import { todolistsThunks } from "features/todolists_list/todolist/todolists_slice"
 import { Grid, Paper } from "@mui/material"
-import { Todolist } from "features/todolists_list/todolist/ui/todolist"
+import { Todolist } from "features/todolists_list/todolist/todolist"
 import { Navigate } from "react-router-dom"
 import { useAppDispatch } from "common/hooks/use_app_dispatch"
 import { isLoggedInSelector } from "features/auth/auth_selectors"
 import { AddItemForm } from "common/components"
-import { selectTodolists } from "features/todolists_list/todolist/model/todolists_selector"
-import { selectTasks } from "features/todolists_list/todolist/task/model/tasks_selectors"
+import { selectTodolists } from "features/todolists_list/todolist/todolists_selector"
+import { selectTasks } from "features/todolists_list/todolist/tasks/tasks_selectors"
 
 type PropsType = {
   demo?: boolean
@@ -30,7 +30,7 @@ export const TodolistsList: React.FC<PropsType> = memo(({ demo = false }) => {
 
   const addTodolist = useCallback(
     (title: string) => {
-      dispatch(todolistsThunks.addTodolist(title))
+      return dispatch(todolistsThunks.addTodolist(title)).unwrap()
     },
     [dispatch]
   )
