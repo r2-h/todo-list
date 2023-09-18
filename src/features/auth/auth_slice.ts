@@ -10,7 +10,7 @@ const slice = createSlice({
   name: "auth",
   initialState: {
     isLoggedIn: false,
-  },
+  } as AuthReducerType,
   reducers: {},
   extraReducers: (builder) => {
     builder
@@ -55,19 +55,20 @@ const initializeApp = createAppAsyncThunk<{ isLoggedIn: boolean }, undefined>(
   "auth/initializeApp",
   async (_, thunkAPI) => {
     const { dispatch, rejectWithValue } = thunkAPI
-    try {
-      const res = await authAPI.me()
-      if (res.data.resultCode === ResultCode.success) {
-        return { isLoggedIn: true }
-      } else {
-        return rejectWithValue({ data: res.data, showGlobalError: false })
-      }
-    } finally {
+    const res = await authAPI.me()
+    if (res.data.resultCode === ResultCode.success) {
       dispatch(appActions.setAppInitialized({ isInitialized: true }))
+      return { isLoggedIn: true }
+    } else {
+      return rejectWithValue({ data: res.data, showGlobalError: false })
     }
   }
 )
 
-export const authSlice = slice.reducer
+export const authReducer = slice.reducer
 export const authActions = slice.actions
 export const authThunks = { logout, login, initializeApp }
+
+export type AuthReducerType = {
+  isLoggedIn: boolean
+}
