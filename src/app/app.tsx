@@ -1,7 +1,6 @@
 import React, { FC, memo, useEffect } from "react"
 import "app/app.css"
 import { useSelector } from "react-redux"
-import { HashRouter } from "react-router-dom"
 import { authThunks } from "features/auth/auth_slice"
 import { CircularProgress } from "@mui/material"
 import { isInitializedSelector } from "app/app_selectors"
@@ -32,12 +31,10 @@ export const App: FC<Props> = memo(({ demo = false }) => {
   }
 
   return (
-    <HashRouter>
-      <div className="App">
-        <ErrorSnackbar />
-        <Header />
-        <Routing demo={demo} />
-      </div>
-    </HashRouter>
+    <div className="App">
+      <ErrorSnackbar />
+      <Header />
+      <Routing demo={demo} />
+    </div>
   )
 })

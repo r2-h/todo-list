@@ -1,6 +1,6 @@
 {
-  "name": "it-incubator-todolist-ts",
-  "homepage": "https://r2-h.github.io/toDoList",
+  "name": "todo-list",
+  "homepage": "https://r2-h.github.io/todo-list",
   "jest": {
     "moduleNameMapper": {
       "axios": "axios/dist/node/axios.cjs"
