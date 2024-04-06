@@ -1,6 +1,6 @@
-[https://r2adler.github.io/toDoList](demo)
+[demo]([demo](https://r2adler.github.io/toDoList))
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project was bootstrapped with [Create React App].
 
 ## Available Scripts
 
